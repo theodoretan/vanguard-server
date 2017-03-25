@@ -1,11 +1,24 @@
 {
   "name": "vanguard-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "The server for the game Vanguard",
   "main": "vanguard.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theodoretan/vanguard-server.git"
+  },
+  "author": "Theodore Tan",
+  "license": "ISC",
+  "homepage": "https://github.com/theodoretan/vanguard-server",
+  "dependencies": {
+    "express": "^4.15.2",
+    "mongoose": "^4.9.1",
+    "socket.io": "^1.7.3"
+  },
+  "devDependencies": {
+    "eslint": "^3.18.0"
+  }
 }
