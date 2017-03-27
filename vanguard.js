@@ -22,14 +22,27 @@ io.on('connection', (client) => {
 	console.log('a user has connected');
 
 	client.on('register', (data) => {
+		// maybe dont need??
 		data = JSON.parse(data);
 
 		let user = new User({ username: data.username, password: data.password });
 
 		// TODO: this will emit back 1. registered -> go to menu 2. username in use -> try another username 3. a different error: email this in
 		user.register()
-			.then(res => console.log(res))
-			.catch(e => console.error(e.toString()));
+			.then(res => client.emit('registered', res))
+			.catch((e) => {
+				if (e.toJSON()['code'] === 11000) client.emit('errorUsernameTaken', e);
+				client.emit('error', e);
+			});
+	});
+
+	client.on('login', (data) => {
+		// maybe we don't need this
+		data = JSON.parse(data);
+
+		User.login(data.username, data.password)
+			.then(res => client.emit('loggedIn', res))
+			.catch(e => client.emit('error', e));
 	});
 
 	// find game
