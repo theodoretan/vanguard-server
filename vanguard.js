@@ -21,6 +21,17 @@ app.get('/', (req, res) => {
 io.on('connection', (client) => {
 	console.log('a user has connected');
 
+	client.on('register', (data) => {
+		data = JSON.parse(data);
+
+		let user = new User({ username: data.username, password: data.password });
+
+		// TODO: this will emit back 1. registered -> go to menu 2. username in use -> try another username 3. a different error: email this in
+		user.register()
+			.then(res => console.log(res))
+			.catch(e => console.error(e.toString()));
+	});
+
 	// find game
 	client.on('findGame', () => {
 		placeClient(client); // put the client in one of the queues
@@ -44,7 +55,7 @@ function placeClient(client) {
 		console.log('putting in queue');
 		queue.push(client);
 
-		// client.emit(header, data) -> waiting for player 2
+		// TODO client.emit(header, data) -> waiting for player 2
 	} else {
 		console.log('pairing clients');
 		let client2 = queue.shift();
@@ -52,7 +63,7 @@ function placeClient(client) {
 
 		paired.push(json);
 
-		// client, client2 emit -> start game
+		// TODO client, client2 emit -> start game
 	}
 }
 
@@ -66,6 +77,8 @@ function disconnectingClient(client) {
 			let pair = paired[i];
 			if (pair['client1'] == client || pair['client2'] == client) {
 				paired.splice(paired.indexOf(pair), 1);
+
+				// TODO dont place them back into the queue -> send them back to the menu
 				if (pair['client1'] == client) {
 					placement = placeClient(pair['client2']);
 				} else {
