@@ -50,6 +50,26 @@ io.on('connection', (client) => {
 		placeClient(client); // put the client in one of the queues
 	});
 
+	// Get characters
+	client.on('getCharacter', (data) => {
+
+		data = JSON.parse(data);
+
+		Character.getUserCharacter(data.username)
+			.then(res => client.emit('gotCharacter', res))
+			.catch(e => client.emit('error', e));
+	});
+
+	// updateScore
+	client.on('updateScore', (data) => {
+		data = JSON.parse(data);
+
+		User.updateScore(data.id, data.wins, data.losses)
+			.then(res => client.emit('scoreUpdated', res))
+			.catch(e => client.emit('error',e));
+
+	});
+
 	// disconnect
 	client.on('disconnect', () => {
 		disconnectingClient(client);
