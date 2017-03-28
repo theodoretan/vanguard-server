@@ -102,7 +102,7 @@ function placeClient(client) {
 
 
 function disconnectingClient(client) {
-	var placement;
+	// var placement;
 	if (queue.indexOf(client) != -1) {
 		queue.splice(queue.indexOf(client), 1);
 	} else {
@@ -112,15 +112,18 @@ function disconnectingClient(client) {
 				paired.splice(paired.indexOf(pair), 1);
 
 				// TODO dont place them back into the queue -> send them back to the menu
+				var message = { 'message': 'User has disconnected, going back to the menu' };
 				if (pair['client1'] == client) {
-					placement = placeClient(pair['client2']);
+					// placement = placeClient(pair['client2']);
+					pair['client2'].emit('menu', message);
 				} else {
-					placement = placeClient(pair['client1']);
+					// placement = placeClient(pair['client1']);
+					pair['client1'].emit('menu', message);
 				}
 			} else {
 				console.error(`where did this client come from ${client}`);
 			}
 		}
 	}
-	return placement;
+	// return placement;
 }
