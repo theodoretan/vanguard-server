@@ -12,6 +12,6 @@
 
 ## Contributing
 
-Look at the [Trello](https://trello.com/b/DZp7tAWy/term-project-scrum-board) and create a new branch with the modules name then move the modules card to In Progress.
+Look at the [Trello](https://trello.com/b/DZp7tAWy/term-project-scrum-board) and create a new branch (name-[emit/on]-[module name/header string]) with the modules name then move the modules card to In Progress.
 
-When the module is done, move the card to Testing.
+When the module is done, move the card to Testing and put the branch name in the description.
