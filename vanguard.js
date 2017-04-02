@@ -38,6 +38,7 @@ io.on('connection', (client) => {
 
 	client.on('login', (data) => {
 		// maybe we don't need this
+		console.log(data);
 		data = JSON.parse(data);
 
 		User.login(data.username, data.password)
