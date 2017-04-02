@@ -4,6 +4,7 @@
   "description": "The server for the game Vanguard",
   "main": "vanguard.js",
   "scripts": {
+		"start": "node vanguard.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
