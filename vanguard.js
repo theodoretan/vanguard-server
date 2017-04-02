@@ -23,7 +23,7 @@ io.on('connection', (client) => {
 
 	client.on('register', (data) => {
 		// maybe dont need??
-		data = JSON.parse(data);
+		// data = JSON.parse(data);
 
 		let user = new User({ username: data.username, password: data.password });
 
@@ -38,8 +38,7 @@ io.on('connection', (client) => {
 
 	client.on('login', (data) => {
 		// maybe we don't need this
-		console.log(data);
-		data = JSON.parse(data);
+		// console.log(data);
 
 		User.login(data.username, data.password)
 			.then(res => client.emit('loggedIn', res))
@@ -54,7 +53,7 @@ io.on('connection', (client) => {
 	// Get characters
 	client.on('getCharacter', (data) => {
 
-		data = JSON.parse(data);
+		// data = JSON.parse(data);
 
 		Character.getUserCharacter(data.username)
 			.then(res => client.emit('gotCharacter', res))
@@ -63,7 +62,7 @@ io.on('connection', (client) => {
 
 	// updateScore
 	client.on('updateScore', (data) => {
-		data = JSON.parse(data);
+		// data = JSON.parse(data);
 
 		User.updateScore(data.id, data.wins, data.losses)
 			.then(res => client.emit('scoreUpdated', res))
