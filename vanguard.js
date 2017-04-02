@@ -70,6 +70,15 @@ io.on('connection', (client) => {
 
 	});
 
+
+	// get score
+	client.on('getScore', (data) => {
+		
+		User.getUserById(data.id)
+			.then(res => client.emit('gotScore', res))
+			.catch(e => client.emit('error', e));
+	});
+
 	// disconnect
 	client.on('disconnect', () => {
 		disconnectingClient(client);
