@@ -46,9 +46,9 @@ io.on('connection', (client) => {
 
 	// set users character
 	client.on('setCharacter', (data) => {
-		let character1 = JSON.parse(data.character1);
-		let character2 = JSON.parse(data.character2);
-		let character3 = JSON.parse(data.character3);
+		let character1 = data.character1;
+		let character2 = data.character2;
+		let character3 = data.character3;
 
 		let character = new Character({ username: data.username, character1: character1, character2: character2, character3: character3 });
 
