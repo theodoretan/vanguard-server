@@ -56,15 +56,15 @@ io.on('connection', (client) => {
 			// client.join(room);
 			// client2.client.join(room);
 
-			var json = { 'client1': { 'client' : client, 'gameUser': user }, 'client2': client2 };
+			var json = { 'client1': user, 'client2': client2.gameUser };
 			paired[room] = json;
 
 			json['room'] = room;
 
 			// io.in(room).emit('paired', json);
-			client.emit('paried', json);
-			client2['client'].emit('paired', json);
+			client.emit('paired', json);
 			console.log('pairing clients');
+			client2['client'].emit('paired', json);
 		}
 	});
 
@@ -147,31 +147,31 @@ server.listen(port, () => {
 });
 
 
-function placeClient(client, user) {
-	if (queue.length === 0) {
-		console.log('putting in queue');
-		let json = { 'client' : client, 'gameUser': user };
-		queue.push(json);
-
-		client.emit('inqueue', { message: 'waiting for another player' });
-	} else {
-		let client2 = queue.shift();
-		let room = `${user.username}-${client2.gameUser.username}`;
-		rooms.push(room);
-		// client.join(room);
-		// client2.client.join(room);
-
-		var json = { 'client1': { 'client' : client, 'gameUser': user }, 'client2': client2 };
-		paired[room] = json;
-
-		json['room'] = room;
-
-		// io.in(room).emit('paired', json);
-		client.emit('paried', json);
-		console.log('pairing clients');
-		// client2['client'].emit('paired', json);
-	}
-}
+// function placeClient(client, user) {
+// 	if (queue.length === 0) {
+// 		console.log('putting in queue');
+// 		let json = { 'client' : client, 'gameUser': user };
+// 		queue.push(json);
+//
+// 		client.emit('inqueue', { message: 'waiting for another player' });
+// 	} else {
+// 		let client2 = queue.shift();
+// 		let room = `${user.username}-${client2.gameUser.username}`;
+// 		rooms.push(room);
+// 		// client.join(room);
+// 		// client2.client.join(room);
+//
+// 		var json = { 'client1': { 'client' : client, 'gameUser': user }, 'client2': client2 };
+// 		paired[room] = json;
+//
+// 		json['room'] = room;
+//
+// 		// io.in(room).emit('paired', json);
+// 		client.emit('paried', json);
+// 		console.log('pairing clients');
+// 		// client2['client'].emit('paired', json);
+// 	}
+// }
 
 
 function disconnectingClient(client) {
