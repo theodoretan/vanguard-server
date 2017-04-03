@@ -61,6 +61,11 @@ io.on('connection', (client) => {
 			.catch(e => client.emit('error', e));
 	});
 
+	client.on('updateCharacter', (data) => {
+		Character.updateUserCharacter(data.username, data.character1, data.character2, data.character3)
+			.then(res => client.emit('updatedCharacter', res))
+			.catch(e => client.emit('error', e));
+	});
 
 	// Get characters
 	client.on('getCharacter', (data) => {
