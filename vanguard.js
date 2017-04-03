@@ -62,7 +62,7 @@ io.on('connection', (client) => {
 	client.on('getCharacter', (data) => {
 		Character.getUserCharacter(data.username)
 			.then(res => client.emit('gotCharacter', res))
-			.catch(e => client.emit('error', e));
+			.catch((e) => { console.error(e); client.emit('error', e); });
 	});
 
 	// updateScore
