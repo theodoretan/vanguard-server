@@ -136,7 +136,7 @@ function placeClient(client, user) {
 		let room = `${user.username}-${client2.gameUser.username}`;
 		rooms.push(room);
 		client.join(room);
-		client2.join(room);
+		client2.client.join(room);
 
 		let json = { 'client1': { 'client' : client, 'gameUser': user }, 'client2': client2 };
 		paired[room] = json;
