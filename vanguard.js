@@ -61,8 +61,11 @@ io.on('connection', (client) => {
 	// Get characters
 	client.on('getCharacter', (data) => {
 		Character.getUserCharacter(data.username)
-			.then((res) => { console.log(res); client.emit('gotCharacter', res); })
-			.catch((e) => { console.error(e); client.emit('error', e); });
+			.then((res) => {
+				if (res != null) client.emit('gotCharacter', res);
+				else client.emit('noCharacter');
+			})
+			.catch(e => client.emit('error', e));
 	});
 
 	// updateScore
