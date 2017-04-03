@@ -10,7 +10,7 @@ let app = express();
 let server = http.Server(app);
 let io = socket(server);
 
-let port = process.env.PORT;
+let port = process.env.PORT || 8080;
 var queue = [];
 var paired = [];
 
@@ -50,6 +50,20 @@ io.on('connection', (client) => {
 		placeClient(client); // put the client in one of the queues
 	});
 
+	// set users character
+	client.on('setCharacter', (data) => {
+		let character1 = JSON.parse(data.character1);
+		let character2 = JSON.parse(data.character2);
+		let character3 = JSON.parse(data.character3);
+
+		let character = new Character({ username: data.username, character1: character1, character2: character2, character3: character3 });
+
+		character.setUserCharacter()
+			.then(res => client.emit('setCharacter', res))
+			.catch(e => client.emit('error', e));
+	});
+
+
 	// Get characters
 	client.on('getCharacter', (data) => {
 
@@ -73,7 +87,7 @@ io.on('connection', (client) => {
 
 	// get score
 	client.on('getScore', (data) => {
-		
+
 		User.getUserById(data.id)
 			.then(res => client.emit('gotScore', res))
 			.catch(e => client.emit('error', e));
