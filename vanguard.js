@@ -112,6 +112,8 @@ function placeClient(client, user) {
 		let json = { 'client1': { 'client' : client, 'gameUser': user }, 'client2': client2 };
 		paired[room] = json;
 
+		json['room'] = room;
+
 		io.to(room).emit('paired', json);
 	}
 }
