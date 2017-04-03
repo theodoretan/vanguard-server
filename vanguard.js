@@ -135,8 +135,8 @@ function placeClient(client, user) {
 		let client2 = queue.shift();
 		let room = `${user.username}-${client2.gameUser.username}`;
 		rooms.push(room);
-		client.join(room);
-		client2.client.join(room);
+		// client.join(room);
+		// client2.client.join(room);
 
 		var json = { 'client1': { 'client' : client, 'gameUser': user }, 'client2': client2 };
 		paired[room] = json;
@@ -163,16 +163,16 @@ function disconnectingClient(client) {
 
 			if (value.client1.client == client) {
 				rooms.splice(rooms.indexOf(room));
-				value.client1.client.leave(room);
-				value.client2.client.leave(room);
+				// value.client1.client.leave(room);
+				// value.client2.client.leave(room);
 
 				rem = room;
 
 				value.client2.client.emit('menu', message);
 			} else if (value.client2.client == client) {
 				rooms.splice(rooms.indexOf(room));
-				value.client1.client.leave(room);
-				value.client2.client.leave(room);
+				// value.client1.client.leave(room);
+				// value.client2.client.leave(room);
 
 				rem = room;
 
