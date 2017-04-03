@@ -124,6 +124,7 @@ function disconnectingClient(client) {
 		queue.splice(queue.indexOf(result[0]), 1);
 	} else {
 		let message = { 'message': 'User has disconnected, going back to the menu' };
+		var rem = null;
 		for (var room in paired) {
 			let value = paired[room];
 
@@ -132,16 +133,24 @@ function disconnectingClient(client) {
 				value.client1.client.leave(room);
 				value.client2.client.leave(room);
 
+				rem = room;
+
 				value.client2.client.emit('menu', message);
 			} else if (value.client2.client == client) {
 				rooms.splice(rooms.indexOf(room));
 				value.client1.client.leave(room);
 				value.client2.client.leave(room);
 
+				rem = room;
+
 				value.client1.client.emit('menu', message);
 			} else {
 				console.error(`where did this client come from ${client}`);
 			}
+		}
+
+		if (rem !== null) {
+			delete paired[rem];
 		}
 	}
 }
