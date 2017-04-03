@@ -55,9 +55,10 @@ io.on('connection', (client) => {
 			rooms.push(room);
 			// client.join(room);
 			// client2.client.join(room);
+			var json = {'client1': client, 'client2': client2.client};
 
-			var json = { 'client1': user, 'client2': client2.gameUser };
 			paired[room] = json;
+			json = { 'client1': user, 'client2': client2.gameUser };
 
 			json['room'] = room;
 
@@ -185,22 +186,22 @@ function disconnectingClient(client) {
 		for (var room in paired) {
 			let value = paired[room];
 
-			if (value.client1.client == client) {
+			if (value.client1 == client) {
 				rooms.splice(rooms.indexOf(room));
 				// value.client1.client.leave(room);
 				// value.client2.client.leave(room);
 
 				rem = room;
 
-				value.client2.client.emit('menu', message);
-			} else if (value.client2.client == client) {
+				value.client2.emit('menu', message);
+			} else if (value.client2 == client) {
 				rooms.splice(rooms.indexOf(room));
 				// value.client1.client.leave(room);
 				// value.client2.client.leave(room);
 
 				rem = room;
 
-				value.client1.client.emit('menu', message);
+				value.client1.emit('menu', message);
 			} else {
 				console.error(`where did this client come from ${client}`);
 			}
