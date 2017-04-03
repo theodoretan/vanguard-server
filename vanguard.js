@@ -61,7 +61,7 @@ io.on('connection', (client) => {
 	// Get characters
 	client.on('getCharacter', (data) => {
 		Character.getUserCharacter(data.username)
-			.then(res => client.emit('gotCharacter', res))
+			.then((res) => { console.log(res); client.emit('gotCharacter', res); })
 			.catch((e) => { console.error(e); client.emit('error', e); });
 	});
 
