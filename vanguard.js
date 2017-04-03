@@ -131,7 +131,6 @@ function placeClient(client, user) {
 
 		client.emit('inqueue', { message: 'waiting for another player' });
 	} else {
-		console.log('pairing clients');
 		let client2 = queue.shift();
 		let room = `${user.username}-${client2.gameUser.username}`;
 		rooms.push(room);
@@ -142,6 +141,7 @@ function placeClient(client, user) {
 		paired[room] = json;
 
 		json['room'] = room;
+		console.log('pairing clients');
 
 		// io.in(room).emit('paired', json);
 		client.emit('paried', json);
