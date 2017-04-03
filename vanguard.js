@@ -143,7 +143,9 @@ function placeClient(client, user) {
 
 		json['room'] = room;
 
-		io.in(room).emit('paired', json);
+		// io.in(room).emit('paired', json);
+		client.emit('paried', json);
+		client2.client.emit('paired', json);
 	}
 }
 
