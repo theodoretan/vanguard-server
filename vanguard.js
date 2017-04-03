@@ -138,12 +138,12 @@ function placeClient(client, user) {
 		client.join(room);
 		client2.client.join(room);
 
-		let json = { 'client1': { 'client' : client, 'gameUser': user }, 'client2': client2 };
+		var json = { 'client1': { 'client' : client, 'gameUser': user }, 'client2': client2 };
 		paired[room] = json;
 
 		json['room'] = room;
 
-		io.to(room).emit('paired', json);
+		io.in(room).emit('paired', json);
 	}
 }
 
