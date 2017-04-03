@@ -41,7 +41,31 @@ io.on('connection', (client) => {
 
 	// find game
 	client.on('findGame', (user) => {
-		placeClient(client, user); // put the client in one of the queues
+		// placeClient(client, user); // put the client in one of the queues
+
+		if (queue.length === 0) {
+			console.log('putting in queue');
+			let json = { 'client' : client, 'gameUser': user };
+			queue.push(json);
+
+			client.emit('inqueue', { message: 'waiting for another player' });
+		} else {
+			let client2 = queue.shift();
+			let room = `${user.username}-${client2.gameUser.username}`;
+			rooms.push(room);
+			// client.join(room);
+			// client2.client.join(room);
+
+			var json = { 'client1': { 'client' : client, 'gameUser': user }, 'client2': client2 };
+			paired[room] = json;
+
+			json['room'] = room;
+
+			// io.in(room).emit('paired', json);
+			client.emit('paried', json);
+			client2['client'].emit('paired', json);
+			console.log('pairing clients');
+		}
 	});
 
 	// set users character
@@ -141,11 +165,11 @@ function placeClient(client, user) {
 		paired[room] = json;
 
 		json['room'] = room;
-		console.log('pairing clients');
 
 		// io.in(room).emit('paired', json);
 		client.emit('paried', json);
-		client2.client.emit('paired', json);
+		console.log('pairing clients');
+		// client2['client'].emit('paired', json);
 	}
 }
 
