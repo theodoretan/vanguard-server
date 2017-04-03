@@ -50,6 +50,10 @@ io.on('connection', (client) => {
 		let character2 = data.character2;
 		let character3 = data.character3;
 
+		console.log(character1);
+		console.log(character2);
+		console.log(character3);
+
 		let character = new Character({ username: data.username, character1: character1, character2: character2, character3: character3 });
 
 		character.setUserCharacter()
