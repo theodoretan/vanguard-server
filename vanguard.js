@@ -93,6 +93,23 @@ io.on('connection', (client) => {
 			.catch(e => client.emit('error', e));
 	});
 
+
+	client.on('getCharacters', (data) => {
+		var json = {};
+
+		Character.getUserCharacter(data.opp.username)
+			.then((res) => {
+				json['oppCharacter'] = res;
+				Character.getUserCharacter(data.user.username)
+					.then(res => {
+						json['userCharacter'] = res;
+						client.emit('gotCharacters', json);
+					})
+					.catch(e => client.emit('error', e));
+			})
+			.catch(e => client.emit('error', e));
+	});
+
 	// disconnect
 	client.on('disconnect', () => {
 		disconnectingClient(client);
