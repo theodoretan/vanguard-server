@@ -46,8 +46,8 @@ io.on('connection', (client) => {
 	});
 
 	// find game
-	client.on('findGame', () => {
-		placeClient(client); // put the client in one of the queues
+	client.on('findGame', (user) => {
+		placeClient(client, user); // put the client in one of the queues
 	});
 
 	// set users character
@@ -106,47 +106,45 @@ server.listen(port, () => {
 });
 
 
-function placeClient(client) {
+function placeClient(client, user) {
 	if (queue.length === 0) {
 		console.log('putting in queue');
-		queue.push(client);
+		let json = { 'client' : client, 'game-user': user };
+		queue.push(json);
 
-		// TODO client.emit(header, data) -> waiting for player 2
+		client.emit('inqueue', { message: 'waiting for another player' });
 	} else {
 		console.log('pairing clients');
 		let client2 = queue.shift();
-		let json = { 'client1': client, 'client2': client2 };
+		let json = { 'client1': { 'client' : client, 'game-user': user }, 'client2': client2 };
 
 		paired.push(json);
 
 		// TODO client, client2 emit -> start game
+
 	}
 }
 
 
 function disconnectingClient(client) {
-	// var placement;
-	if (queue.indexOf(client) != -1) {
-		queue.splice(queue.indexOf(client), 1);
-	} else {
-		for (let i = 0; i < paired.length; i++) {
-			let pair = paired[i];
-			if (pair['client1'] == client || pair['client2'] == client) {
-				paired.splice(paired.indexOf(pair), 1);
+	var result = queue.filter(obj => obj.client == client);
 
-				// TODO dont place them back into the queue -> send them back to the menu
-				var message = { 'message': 'User has disconnected, going back to the menu' };
-				if (pair['client1'] == client) {
-					// placement = placeClient(pair['client2']);
-					pair['client2'].emit('menu', message);
-				} else {
-					// placement = placeClient(pair['client1']);
-					pair['client1'].emit('menu', message);
-				}
+	if (result != []) {
+		queue.splice(queue.indexOf(result[0]), 1);
+	} else {
+		result = paired.filter(obj => obj.client1.client == client || obj.client2.client == client);
+		if (result != []) {
+			result = result[0];
+			paired.splice(paired.indexOf(result), 1);
+
+			var message = { 'message': 'User has disconnected, going back to the menu' };
+			if (result.client1.client == client) {
+				result.client2.client.emit('menu', message);
 			} else {
-				console.error(`where did this client come from ${client}`);
+				result.client1.client.emit('menu', message);
 			}
+		} else {
+			console.error(`where did this client come from ${client}`);
 		}
 	}
-	// return placement;
 }
